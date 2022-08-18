@@ -7,6 +7,8 @@ router.post('/getHospitals', async (req, res) => {
     try {
 
         const { district_id, date, limit } = req.body;
+        
+        const lim = limit ? limit : 10;
 
         // Validations...........................
         if (typeof (district_id) !== "number") {
@@ -15,14 +17,12 @@ router.post('/getHospitals', async (req, res) => {
         else if (typeof (date) !== "string") {
             res.status(500).json({ message: "Date must be a string" })
         }
-        else if (typeof (limit) !== "number") {
+        else if (typeof (lim) !== "number") {
             res.status(500).json({ message: "Limit must be a number" })
         }
         else if (limit < 1) {
             res.status(500).json({ message: "Invalid limit" })
         }
-
-        const lim = limit ? limit : 10;
 
         // api call..................................
         const response = await axios.get(
